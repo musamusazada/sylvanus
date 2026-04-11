@@ -16,5 +16,6 @@ export const sampleConfig: IGameConfig = {
   paylines: [
     [{ col: 0, row: 1 }, { col: 1, row: 1 }, { col: 2, row: 1 }] 
   ],
-  defaultBet: 10
+  defaultBet: 10,
+  betOptions: [5, 10, 25, 50, 100]
 };

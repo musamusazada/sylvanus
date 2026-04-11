@@ -27,4 +27,5 @@ export interface IGameConfig {
   symbols: ISymbolDefinition[];
   paylines: ISymbolPosition[][];
   defaultBet: number;
+  betOptions: number[];
 }

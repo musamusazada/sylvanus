@@ -1,4 +1,4 @@
-import type { IGameConfig, SpinType, IPlayResponse } from './types';
+import type { IGameConfig, SpinType, PlayResult, IBootResponse } from './types';
 import { EngineState } from './state/EngineState';
 import { RngService } from './math/RngService';
 import { TimelineBuilder } from './sequencer/TimelineBuilder';
@@ -19,6 +19,18 @@ export class SlotEngine {
     this.sequencer = new TimelineBuilder(this.state);
   }
 
+  public boot(): IBootResponse {
+    return {
+      state: this.state.getCurrentSnapshot(),
+      config: {
+        gridDimensions: this.state.getConfig().gridDimensions,
+        symbols: this.state.getConfig().symbols,
+        spinType: this.state.getConfig().spinType,
+        betOptions: this.state.getConfig().betOptions,
+      },
+    };
+  }
+
   // TODO: TEMP API
 
   public toggleMechanic(mode: SpinType): void {
@@ -35,7 +47,13 @@ export class SlotEngine {
 
   // TODO: clean up
 
-  public play(): IPlayResponse {
+  public play(): PlayResult {
+    // Validate
+    const snapshot = this.state.getCurrentSnapshot();
+    if (snapshot.balance < snapshot.bet) {
+      return { success: false, error: 'INSUFFICIENT_FUNDS' };
+    }
+
     // 1. Charge the bet amount
     this.state.deductBet();
 
@@ -50,6 +68,7 @@ export class SlotEngine {
     // 5. Return generated response. 
     // TODO: Save the transactions in engine state ?
     return {
+      success: true,
       // TODO: move the id gen
       transactionId: `play_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
       state: {
