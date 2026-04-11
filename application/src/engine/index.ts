@@ -48,9 +48,10 @@ export class SlotEngine {
   // TODO: clean up
 
   public play(): PlayResult {
-    // Validate
+    // Validate if play can be made
     const snapshot = this.state.getCurrentSnapshot();
     if (snapshot.balance < snapshot.bet) {
+      // TODO: add response messages enum
       return { success: false, error: 'INSUFFICIENT_FUNDS' };
     }
 
