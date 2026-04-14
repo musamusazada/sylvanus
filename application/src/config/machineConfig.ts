@@ -48,7 +48,7 @@ export const machineConfig: IMachineConfig = {
     spinStart: { duration: 0.3, ease: 'power2.in' },
     spinLoop: { duration: 0.1 },
     reelStop: { duration: 0.3, ease: 'back.out(1)' },
-    anticipation: { duration: 1.2, ease: 'power1.inOut' },
+    anticipation: { duration: 2, speed: 0.5, ease: 'power1.inOut' },
     minSpinTimeBeforeStop: 1,
     cascade: {
       fadeRemovedDuration: 0.3,
