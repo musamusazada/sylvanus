@@ -1,5 +1,6 @@
 import {
   TimelineCommandTypes,
+  type AnticipatePayload,
   type DropSymbolsPayload,
   type FillSymbolsPayload,
   type UpdateMultiplierPayload,
@@ -25,6 +26,9 @@ export function createSpinHandlers(
 
     [TimelineCommandTypes.REEL_STOP]: async (payload: { reelIndex: number; symbols: number[] }) =>
       ctx.get(GameElement.MACHINE).stopReel(payload.reelIndex, payload.symbols),
+
+    [TimelineCommandTypes.ANTICIPATE]: async (payload: AnticipatePayload) =>
+      ctx.get(GameElement.MACHINE).anticipateReel(payload.reelIndex),
 
     [TimelineCommandTypes.DROP_SYMBOLS]: async (payload: DropSymbolsPayload) => {
       await ctx.get(GameElement.MACHINE).dropSymbols(payload.removedPositions);

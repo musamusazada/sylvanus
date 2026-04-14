@@ -33,6 +33,10 @@ function moveDistanceForConfig(config: IMachineConfig): number {
   return config.reel.symbolSize.height + config.reel.spacing;
 }
 
+function getActiveLoopTween(strip: IReelStripView): gsap.core.Tween | undefined {
+  return gsap.getTweensOf(strip).find((tween) => tween.repeat() === -1);
+}
+
 export const reelAnimations = {
   startSpin(
     strip: IReelStripView,
@@ -67,6 +71,19 @@ export const reelAnimations = {
   ): Promise<void> {
     return runStopSpin(strip, config, finalSymbols, symbolPool, random);
   },
+
+  setLoopSpeed(strip: IReelStripView, speedMultiplier: number): void {
+    const tween = getActiveLoopTween(strip);
+    if (!tween) return;
+    const _speed = speedMultiplier > 0 ? speedMultiplier : 1;
+    tween.timeScale(_speed);
+  },
+
+  resetLoopSpeed(strip: IReelStripView): void {
+    const tween = getActiveLoopTween(strip);
+    if (!tween) return;
+    tween.timeScale(1);
+  },
 };
 
 async function runStopSpin(
@@ -76,6 +93,7 @@ async function runStopSpin(
   symbolPool: number[],
   random: TRandomGenerator
 ): Promise<void> {
+  reelAnimations.resetLoopSpeed(strip);
   gsap.killTweensOf(strip);
 
   const moveDistance = moveDistanceForConfig(config);

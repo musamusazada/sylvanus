@@ -18,6 +18,7 @@ export interface IGridDimensions {
  */
 export interface IMachine {
   startSpin(): Promise<void>;
+  anticipateReel(index: number): Promise<void>;
   stopReel(index: number, symbols: number[]): Promise<void>;
   dropSymbols(removedPositions: GridPositionPayload[]): Promise<void>;
   fillSymbols(
@@ -32,6 +33,7 @@ export interface IMachine {
  */
 export interface IMachineSpin {
   startAll(reels: IReel[], symbolPool: number[], random?: TRandomGenerator): Promise<void>;
+  anticipateReel(reel: IReel): Promise<void>;
   stopReel(reel: IReel, symbols: number[], symbolPool: number[], random?: TRandomGenerator): Promise<void>;
 }
 

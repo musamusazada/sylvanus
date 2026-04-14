@@ -53,13 +53,18 @@ export class Machine extends Container implements IMachineView {
     await this.spin.startAll(this.reels, this.symbolPool);
   }
 
+  public async anticipateReel(index: number): Promise<void> {
+    const reel = this.reels[index];
+    if (!reel) {
+      throw new Error(`## Machine anticipateReel: invalid reel index ${index}`);
+    }
+    await this.spin.anticipateReel(reel);
+  }
+
   public async stopReel(index: number, symbols: number[]): Promise<void> {
     const reel = this.reels[index];
     if (!reel) {
-      if (import.meta.env.DEV) {
-        console.warn(`[Machine] stopReel: invalid reel index ${index}`);
-      }
-      return;
+      throw new Error(`## Machine stopReel: invalid reel index ${index}`);
     }
     await this.spin.stopReel(reel, symbols, this.symbolPool);
   }
