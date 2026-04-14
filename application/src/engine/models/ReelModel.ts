@@ -19,14 +19,4 @@ export class ReelModel {
     this.index = index;
     this.cells = [...Array(cellCount).keys()].map(positionCellInReel);
   }
-
-  public setSymbol(cellIndex: number, symbolId: number): void {
-    if (this.cells[cellIndex]) {
-      this.cells[cellIndex].symbolId = symbolId;
-    }
-  }
-
-  public getSymbol(cellIndex: number): number {
-    return this.cells[cellIndex]?.symbolId ?? -1;
-  }
 }
