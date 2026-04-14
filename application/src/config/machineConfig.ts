@@ -17,6 +17,10 @@ export interface IMachineConfig {
     reelStop: IAnimationConfig;
     anticipation: IAnimationConfig;
     minSpinTimeBeforeStop: number;
+    cascade: {
+      fadeRemovedDuration: number;
+      fillStepDuration: number;
+    };
   };
 }
 
@@ -44,5 +48,9 @@ export const machineConfig: IMachineConfig = {
     reelStop: { duration: 0.3, ease: 'back.out(1)' },
     anticipation: { duration: 1.2, ease: 'power1.inOut' },
     minSpinTimeBeforeStop: 1,
+    cascade: {
+      fadeRemovedDuration: 0.3,
+      fillStepDuration: 0.3,
+    },
   },
 };

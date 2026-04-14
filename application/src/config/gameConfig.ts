@@ -17,7 +17,10 @@ export const gameConfig: IGameConfig = {
     { id: 10, name: 'Joker', weight: 1, payouts: { 3: 100 } },
   ],
   paylines: [
-    [{ col: 0, row: 1 }, { col: 1, row: 1 }, { col: 2, row: 1 }] 
+    [{ col: 0, row: 1 }, { col: 1, row: 1 }, { col: 2, row: 1 }],
+    [{ col: 0, row: 1 }, { col: 1, row: 0 }, { col: 2, row: 0 }],
+    [{ col: 0, row: 0 }, { col: 1, row: 1 }, { col: 2, row: 2 }],
+    [{ col: 0, row: 2 }, { col: 1, row: 1 }, { col: 2, row: 0 }],
   ],
   defaultBet: 10,
   betOptions: [5, 10, 25, 50, 100],
