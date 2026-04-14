@@ -1,12 +1,19 @@
 import gsap from 'gsap';
 import { Container, type DestroyOptions } from 'pixi.js';
 import type { IMachineConfig } from '../../../../config/machineConfig';
+import type {
+  CascadeMoveDirectivePayload,
+  CascadeSpawnDirectivePayload,
+  GridPositionPayload
+} from '../../../../engine/types';
 import type { IReelView } from '../reel/IReel';
 import type { IGridDimensions, IMachineSpin, IMachineView } from './IMachine';
 import { createDefaultMachineDeps, type PartialMachineDeps } from './MachineDeps';
+import { fadeOutRemovedSymbols, fillSymbolsFromTop } from '../../animations/cascadeAnimations';
 
 export class Machine extends Container implements IMachineView {
   private reels: IReelView[] = [];
+  private readonly config: IMachineConfig;
   private readonly spin: IMachineSpin;
   private readonly symbolPool: number[];
 
@@ -16,6 +23,7 @@ export class Machine extends Container implements IMachineView {
     deps?: PartialMachineDeps
   ) {
     super();
+    this.config = config;
     this.symbolPool = Object.keys(config.symbolTextures).map(Number);
 
     const defaults = createDefaultMachineDeps(config, gridDimensions);
@@ -54,6 +62,28 @@ export class Machine extends Container implements IMachineView {
       return;
     }
     await this.spin.stopReel(reel, symbols, this.symbolPool);
+  }
+
+  public async dropSymbols(removedPositions: GridPositionPayload[]): Promise<void> {
+    await fadeOutRemovedSymbols(
+      this.reels,
+      removedPositions,
+      this.config.animations.cascade.fadeRemovedDuration
+    );
+  }
+
+  public async fillSymbols(
+    moves: CascadeMoveDirectivePayload[],
+    spawns: CascadeSpawnDirectivePayload[],
+    resultingGrid: number[][]
+  ): Promise<void> {
+    await fillSymbolsFromTop(
+      this.reels,
+      moves,
+      spawns,
+      resultingGrid,
+      this.config.animations.cascade.fillStepDuration
+    );
   }
 
   public override destroy(options?: DestroyOptions): void {

@@ -1,10 +1,12 @@
 import { SlotEngine } from '../../engine';
 import { type IBootResponse, SpinType } from '../../engine/types';
+import type { IMachineConfig } from '../../config/machineConfig';
 import { registerAllHandlers } from '../handlers';
 import { useGameStore, GamePhase } from '../store/gameStore';
 import { GameContext } from './GameContext';
 import { GameElement, type IGameController, type ITimelineExecutor } from './types';
 import type { IMachine } from '../renderer';
+import { WinController } from './win/WinController';
 
 /**
  * Orchestrates the game:
@@ -18,17 +20,20 @@ export class GameController implements IGameController {
   private engine: SlotEngine;
   private gameContext: GameContext;
   private executor: ITimelineExecutor;
+  private winController: WinController;
 
-  constructor(engine: SlotEngine, executor: ITimelineExecutor) {
+  constructor(engine: SlotEngine, executor: ITimelineExecutor, machineConfig: IMachineConfig) {
     this.engine = engine;
     this.executor = executor;
     this.gameContext = new GameContext();
+    this.winController = new WinController();
 
-    registerAllHandlers(this.executor, this.gameContext);
+    registerAllHandlers(this.executor, this.gameContext, this.winController, machineConfig);
   }
 
   public initialize(): IBootResponse {
     const bootData = this.engine.boot();
+    this.winController.initialize(bootData.config.symbols);
     this.syncStore();
     useGameStore.setState({
       mechanic: bootData.config.spinType,
@@ -46,13 +51,13 @@ export class GameController implements IGameController {
 
     useGameStore.setState({ phase: GamePhase.SPINNING });
     const result = this.engine.play();
-    if (!result.success) {
-      // TODO: fix engine response
-      //@ts-ignore
+    if (result.success === false) {
+      this.winController.clearPending();
       useGameStore.setState({ phase: GamePhase.IDLE, error: result.error });
       return;
     }
 
+    this.winController.preparePendingSummary(result.wins);
     this.syncStore();
     await this.executor.execute(result.timeline);
     useGameStore.setState({ phase: GamePhase.IDLE, error: null });

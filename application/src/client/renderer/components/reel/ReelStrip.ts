@@ -1,7 +1,7 @@
 import { Container } from 'pixi.js';
 import { SymbolView } from '../symbol/SymbolView';
 import type { IMachineConfig } from '../../../../config/machineConfig';
-import type { IReelStrip } from './IReelStrip';
+import type { IReelStrip, IReelSymbolCell } from './IReelStrip';
 import { ReelStripState } from './stripState';
 import type { ReelStripDependencies } from './IReelStrip';
 
@@ -11,8 +11,7 @@ export class ReelStrip extends Container implements IReelStrip {
   private readonly state: ReelStripState;
   private symbolHeight: number;
   private spacing: number;
-  public readonly visibleCount: number;
-  public readonly bufferCount: number;
+  private readonly bufferCount: number;
 
   constructor(
     config: IMachineConfig,
@@ -20,7 +19,6 @@ export class ReelStrip extends Container implements IReelStrip {
     private readonly deps: ReelStripDependencies
   ) {
     super();
-    this.visibleCount = visibleCount;
     this.bufferCount = config.reel.bufferSymbols;
     this.symbolHeight = config.reel.symbolSize.height;
     this.spacing = config.reel.spacing;
@@ -64,6 +62,25 @@ export class ReelStrip extends Container implements IReelStrip {
     this.syncViewsFromState();
   }
 
+  public getVisibleSymbolView(row: number): IReelSymbolCell | undefined {
+    return this.views[this.toVisibleIndex(row)];
+  }
+
+  public setVisibleSymbol(row: number, symbolId: number): void {
+    const index = this.toVisibleIndex(row);
+    if (index < 0 || index >= this.state.ids.length) return;
+    this.state.ids[index] = symbolId;
+    this.views[index]?.setSymbol(symbolId);
+  }
+
+  public getVisibleRowY(row: number): number {
+    return row * this.getCellStepDistance() + this.symbolHeight / 2;
+  }
+
+  public getCellStepDistance(): number {
+    return this.symbolHeight + this.spacing;
+  }
+
   /**
    * Syncs views with the state
    */
@@ -71,5 +88,9 @@ export class ReelStrip extends Container implements IReelStrip {
     for (let i = 0; i < this.views.length; i++) {
       this.views[i].setSymbol(this.state.ids[i]);
     }
+  }
+
+  private toVisibleIndex(row: number): number {
+    return row + this.bufferCount;
   }
 }

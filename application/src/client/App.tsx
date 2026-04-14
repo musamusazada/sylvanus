@@ -16,7 +16,7 @@ export const App = () => {
   const controller = useMemo(() => {
     const engine = new SlotEngine(gameConfig);
     const executor = new TimelineExecutor();
-    return new GameController(engine, executor);
+    return new GameController(engine, executor, machineConfig);
   }, []);
 
   useEffect(() => {

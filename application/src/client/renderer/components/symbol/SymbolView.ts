@@ -27,8 +27,4 @@ export class SymbolView extends Container implements ISymbolView {
     }
     this.sprite.texture = this.getSymbolTexture(id);
   }
-
-  public get id(): number {
-    return this.currentId;
-  }
 }

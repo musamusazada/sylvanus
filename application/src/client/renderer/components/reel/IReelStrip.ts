@@ -1,14 +1,24 @@
 import type { Container } from 'pixi.js';
 import type { TTextureResolver } from '../symbol/ISymbolView';
+import type { ISymbolView } from '../symbol/ISymbolView';
 import type { TRandomGenerator } from '../../utils/symbolRandom';
 import { AssetLoader } from '../../assets/AssetLoader';
 
+
+// TODO: rework the ISymbolView to not have this type
+export interface IReelSymbolCell extends ISymbolView {
+  alpha: number;
+  y: number;
+}
+
 export interface IReelStrip {
-  readonly visibleCount: number;
-  readonly bufferCount: number;
   setFinalSymbols(symbolIds: number[]): void;
   randomizeSymbols(symbolPool: number[]): void;
   shiftSymbolsDown(newTopSymbolId: number): void;
+  getVisibleSymbolView(row: number): IReelSymbolCell | undefined;
+  setVisibleSymbol(row: number, symbolId: number): void;
+  getVisibleRowY(row: number): number;
+  getCellStepDistance(): number;
 }
 
 /**

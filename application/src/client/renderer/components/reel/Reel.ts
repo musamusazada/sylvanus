@@ -2,7 +2,12 @@ import { Container, Graphics } from 'pixi.js';
 import { ReelStrip } from './ReelStrip';
 import type { IMachineConfig } from '../../../../config/machineConfig';
 import type { IReel } from './IReel';
-import { defaultStripDependencies, type IReelStripView, type ReelStripDependencies } from './IReelStrip';
+import {
+  defaultStripDependencies,
+  type IReelStripView,
+  type IReelSymbolCell,
+  type ReelStripDependencies
+} from './IReelStrip';
 
 
 export class Reel extends Container implements IReel {
@@ -38,5 +43,21 @@ export class Reel extends Container implements IReel {
 
   public getStrip(): IReelStripView {
     return this.strip;
+  }
+
+  public getVisibleSymbolView(row: number): IReelSymbolCell | undefined {
+    return this.strip.getVisibleSymbolView(row);
+  }
+
+  public setVisibleSymbol(row: number, symbolId: number): void {
+    this.strip.setVisibleSymbol(row, symbolId);
+  }
+
+  public getVisibleRowY(row: number): number {
+    return this.strip.getVisibleRowY(row);
+  }
+
+  public getCellStepDistance(): number {
+    return this.strip.getCellStepDistance();
   }
 }

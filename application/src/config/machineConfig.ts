@@ -20,6 +20,8 @@ export interface IMachineConfig {
     cascade: {
       fadeRemovedDuration: number;
       fillStepDuration: number;
+      pauseAfterDrop: number;
+      pauseAfterFill: number;
     };
   };
 }
@@ -51,6 +53,8 @@ export const machineConfig: IMachineConfig = {
     cascade: {
       fadeRemovedDuration: 0.3,
       fillStepDuration: 0.3,
+      pauseAfterDrop: 0.5,
+      pauseAfterFill: 0.5,
     },
   },
 };

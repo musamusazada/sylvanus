@@ -51,7 +51,7 @@ body {
   width: 100%;
   max-width: 1000px;
   height: 90vh;
-  max-height: 900px;
+  max-height: 1000px;
   padding: 30px;
   background: rgba(11, 12, 16, 0.8);
   border: 1px solid rgba(255,255,255,0.05);
@@ -92,6 +92,62 @@ body {
   border-radius: 16px;
   padding: 16px 24px;
   border: 1px solid var(--panel-border);
+}
+
+/* Win UI */
+
+.result-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 12px 16px;
+}
+
+.win-display-wrapper {
+  min-width: 180px;
+}
+
+.win-display {
+  color: var(--gold);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.win-summary-display {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.win-summary-section {
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.win-summary-step {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.win-summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+}
+
+.win-summary-row.is-detail {
+  opacity: 0.9;
+  font-size: 0.9rem;
 }
 
 /* Typography */
