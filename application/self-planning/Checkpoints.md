@@ -24,3 +24,27 @@ Pivot to client to field test the engine before finishing it up.
 
 Achieve: reactive ui, spin and resolve reels.
 
+Check 2:
+
+### Client:
+
+- Client setup
+- Engine connection
+- initial components
+- timeline handlers
+
+Achieved: UI, Pixi Render, spinning and resolving reels
+
+### Engine:
+
+TODO: 
+
+-> Add Win eval
+-> Add cascade support
+
+### Client:
+
+-> Add new win handlers, show them on UI. Reel presentation not necessary now
+-> Cascade:
+    1. Add support to client machine
+    2. Add new handlers
