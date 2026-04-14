@@ -20,7 +20,7 @@ export class TimelineBuilder {
 
     switch (config.spinType) {
       case SpinType.SPIN:
-        return this.spinGenerator.generate(grid, config);
+        return this.spinGenerator.generate(grid);
       default:
         throw new Error(`Unknown spin type: ${config.spinType}`);
     }

@@ -1,4 +1,5 @@
 import { reelAnimations } from '../animations/reelAnimations';
+import { waitFor } from '../utils/GsapUtils';
 import type { IMachineConfig } from '../../../config/machineConfig';
 import type { IReel } from '../components/reel/IReel';
 import type { IMachineSpin } from '../components/machine/IMachine';
@@ -16,6 +17,7 @@ export class SpinController implements IMachineSpin {
       reelAnimations.startSpin(reel.getStrip(), this.config, symbolPool, random)
     );
     await Promise.all(promises);
+    await waitFor(this.config.animations.minSpinTimeBeforeStop);
   }
 
   public async stopReel(

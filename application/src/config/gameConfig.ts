@@ -21,5 +21,4 @@ export const gameConfig: IGameConfig = {
   ],
   defaultBet: 10,
   betOptions: [5, 10, 25, 50, 100],
-  minSpinDuration: 1000
 };

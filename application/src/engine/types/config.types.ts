@@ -28,5 +28,4 @@ export interface IGameConfig {
   paylines: ISymbolPosition[][];
   defaultBet: number;
   betOptions: number[];
-  minSpinDuration?: number;
 }
