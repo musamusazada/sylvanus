@@ -2,6 +2,7 @@ import type { IGameConfig, SpinType, PlayResult, IBootResponse } from './types';
 import { EngineState } from './state/EngineState';
 import { RngService } from './math/RngService';
 import { TimelineBuilder } from './sequencer/TimelineBuilder';
+import { WinEvaluatorFactory } from './win/WinEvaluatorFactory';
 
 /**
  * TODO: Write docs
@@ -10,6 +11,7 @@ export class SlotEngine {
   private state: EngineState;
   private rng: RngService;
   private sequencer: TimelineBuilder;
+  private winEvaluatorFactory: WinEvaluatorFactory;
 
   constructor(initialConfig: IGameConfig) {
     this.state = new EngineState(initialConfig);
@@ -17,6 +19,7 @@ export class SlotEngine {
     // Setup services
     this.rng = new RngService(this.state);
     this.sequencer = new TimelineBuilder(this.state);
+    this.winEvaluatorFactory = new WinEvaluatorFactory();
   }
 
   public boot(): IBootResponse {
@@ -61,10 +64,19 @@ export class SlotEngine {
     // 2. Generate the final grid
     const finalGrid = this.rng.generateGrid();
 
-    // 3. TODO: Win Eval
+    // 3. Evaluate wins based on selected spin mode
+    const config = this.state.getConfig();
+    const evaluator = this.winEvaluatorFactory.get(config);
+    const wins = evaluator.evaluate({
+      grid: finalGrid,
+      config,
+      bet: snapshot.bet,
+      pickRandomSymbolId: () => this.rng.getRandomSymbolId(),
+    });
+    this.state.applyWin(wins.totalWin);
 
     // 4. Create timeline
-    const timeline = this.sequencer.build(finalGrid);
+    const timeline = this.sequencer.build(finalGrid, wins);
 
     // 5. Return generated response. 
     // TODO: Save the transactions in engine state ?
@@ -76,7 +88,8 @@ export class SlotEngine {
         initial: this.state.getPreviousSnapshot(),
         final: this.state.getCurrentSnapshot()
       },
-      timeline: timeline
+      timeline: timeline,
+      wins,
     };
   }
 }

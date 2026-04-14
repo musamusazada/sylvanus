@@ -1,5 +1,5 @@
 import { GridModel } from '../../models/GridModel';
-import { TimelineCommandTypes, type PlayTimeline } from '../../types';
+import { TimelineCommandTypes, type IWinEvaluationResult, type PlayTimeline } from '../../types';
 
 /**
  * TODO: write docs
@@ -7,7 +7,7 @@ import { TimelineCommandTypes, type PlayTimeline } from '../../types';
  */
 export class SpinGenerator {
   
-  public generate(grid: GridModel): PlayTimeline {
+  public generate(grid: GridModel, wins: IWinEvaluationResult): PlayTimeline {
     const timeline: PlayTimeline = [];
 
     // 1. Command the machine to start spinning
@@ -29,6 +29,17 @@ export class SpinGenerator {
         }
       ]);
     });
+
+    timeline.push([
+      {
+        type: TimelineCommandTypes.WIN_RESULT,
+        payload: {
+          totalWin: wins.totalWin,
+          spinWinsCount: wins.spinWins.length,
+          cascadeStepsCount: wins.cascadeSteps.length,
+        },
+      }
+    ]);
 
     return timeline;
   }

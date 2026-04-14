@@ -50,6 +50,11 @@ export class EngineState {
     this.balance -= this.currentBet;
   }
 
+  public applyWin(amount: number): void {
+    if (amount <= 0) return;
+    this.balance += amount;
+  }
+
   // Snapshots
 
   public getPreviousSnapshot(): IEngineStateSnapshot {

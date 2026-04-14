@@ -35,7 +35,7 @@ export class RngService {
   /**
    * Get a random symbol ID based on weight distribution.
    */
-  private getRandomSymbolId(): number {
+  public getRandomSymbolId(): number {
     const symbols = this.state.getConfig().symbols;
 
     const totalWeight = symbols.reduce((sum, s) => sum + s.weight, 0);
