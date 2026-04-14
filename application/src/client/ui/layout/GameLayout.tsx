@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from 'react';
-import { BalanceDisplay } from './displays/BalanceDisplay';
-import { SpinButton } from './controls/SpinButton';
-import { BetControls } from './controls/BetControls';
-import { ModeSwitch } from './controls/ModeSwitch';
+import { BalanceDisplay } from '../displays/BalanceDisplay';
+import { SpinButton } from '../controls/SpinButton';
+import { BetControls } from '../controls/BetControls';
+import { ModeSwitch } from '../controls/ModeSwitch';
 
 export const GameLayout: FC<{ children?: ReactNode }> = ({ children }) => {
 
