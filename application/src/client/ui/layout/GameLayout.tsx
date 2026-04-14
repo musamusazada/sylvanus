@@ -16,9 +16,7 @@ export const GameLayout: FC<{ children?: ReactNode }> = ({ children }) => {
       </div>
 
       {/* Canvas Area */}
-      <div className="canvas-container">
-        {<div className="placeholder">Canvas</div>}
-      </div>
+      <div className="canvas-container">{children}</div>
 
       {/* Control Bar */}
       <div className="control-bar">

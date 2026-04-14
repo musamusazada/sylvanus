@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useGameStore, GamePhase } from '../../store/gameStore';
-import { useGameController } from '../../core/GameControllerContext';
+import { useGameController } from '../context/GameControllerContext';
 
 export const BetControls: FC = () => {
   const bet = useGameStore(state => state.bet);

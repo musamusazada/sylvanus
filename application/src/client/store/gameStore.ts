@@ -27,3 +27,5 @@ export const useGameStore = create<GameState>(() => ({
   lastResult: null,
   error: null,
 }));
+
+export type TGameStore = typeof useGameStore;

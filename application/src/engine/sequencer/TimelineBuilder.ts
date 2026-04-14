@@ -16,13 +16,13 @@ export class TimelineBuilder {
   }
 
   public build(grid: GridModel): PlayTimeline {
-    const spinType = this.state.getConfig().spinType;
+    const config = this.state.getConfig();
 
-    switch (spinType) {
+    switch (config.spinType) {
       case SpinType.SPIN:
-        return this.spinGenerator.generate(grid);
+        return this.spinGenerator.generate(grid, config);
       default:
-        throw new Error(`Unknown spin type: ${spinType}`);
+        throw new Error(`Unknown spin type: ${config.spinType}`);
     }
   }
 }
