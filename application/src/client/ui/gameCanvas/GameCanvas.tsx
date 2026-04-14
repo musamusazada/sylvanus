@@ -7,6 +7,7 @@ import {
   mountMachineOnStage,
   type CanvasInitOptions,
 } from '.';
+import { attachPixiFpsHud } from './pixiFpsHud';
 
 interface GameCanvasProps {
   machineConfig: IMachineConfig;
@@ -32,10 +33,13 @@ export const GameCanvas: FC<GameCanvasProps> = ({
     }
 
     let app: Application | null = null;
+    let detachFpsHud: (() => void) | undefined;
     let machine: Machine | undefined;
     let isDestroyed = false;
 
-    const disposeGraphics = () => {
+    const releaseApp = () => {
+      detachFpsHud?.();
+      detachFpsHud = undefined;
       if (app) {
         app.destroy(true, { children: true, texture: false });
         app = null;
@@ -52,6 +56,7 @@ export const GameCanvas: FC<GameCanvasProps> = ({
         }
 
         app = newApp;
+        detachFpsHud = attachPixiFpsHud(newApp);
 
         const newMachine = await mountMachineOnStage(app, {
           machineConfig,
@@ -60,8 +65,7 @@ export const GameCanvas: FC<GameCanvasProps> = ({
 
         if (isDestroyed) {
           newMachine.destroy({ children: true, texture: false });
-          app.destroy(true, { children: true, texture: false });
-          app = null;
+          releaseApp();
           return;
         }
 
@@ -69,10 +73,7 @@ export const GameCanvas: FC<GameCanvasProps> = ({
 
         onMachineReady(machine);
       } catch (err) {
-        if (app) {
-          app.destroy(true, { children: true, texture: false });
-          app = null;
-        }
+        releaseApp();
         if (!isDestroyed) {
           onError?.(err);
         }
@@ -83,7 +84,7 @@ export const GameCanvas: FC<GameCanvasProps> = ({
 
     return () => {
       isDestroyed = true;
-      disposeGraphics();
+      releaseApp();
     };
   }, [machineConfig, gridDimensions, onMachineReady, onError, canvas]);
 
