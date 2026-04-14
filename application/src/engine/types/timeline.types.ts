@@ -1,6 +1,7 @@
 export enum TimelineCommandTypes {
     SPIN_START = "SPIN_START",
     REEL_STOP = "REEL_STOP",
+    ANTICIPATE = "ANTICIPATE",
     WIN_RESULT = "WIN_RESULT",
     DROP_SYMBOLS = "DROP_SYMBOLS",
     FILL_SYMBOLS = "FILL_SYMBOLS",
@@ -36,6 +37,16 @@ export type CommandReelStop = TimelineCommand<TimelineCommandTypes.REEL_STOP, Re
 export interface ReelStopPayload {
   reelIndex: number; // index of the reel to stop
   symbols: number[]; // final symbols for the reel
+}
+
+// ANTICIPATE
+/*
+ * Signals that the next reel to stop should play an anticipation effect.
+ */
+export type CommandAnticipate = TimelineCommand<TimelineCommandTypes.ANTICIPATE, AnticipatePayload>;
+
+export interface AnticipatePayload {
+  reelIndex: number;
 }
 
 // WIN_RESULT
@@ -110,6 +121,7 @@ export interface UpdateMultiplierPayload {
 export type ValidCommands =
   | CommandSpinStart
   | CommandReelStop
+  | CommandAnticipate
   | CommandWinResult
   | CommandDropSymbols
   | CommandFillSymbols

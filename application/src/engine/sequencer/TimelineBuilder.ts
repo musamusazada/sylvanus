@@ -24,9 +24,9 @@ export class TimelineBuilder {
 
     switch (config.spinType) {
       case SpinType.SPIN:
-        return this.spinGenerator.generate(grid, wins);
+        return this.spinGenerator.generate(grid, wins, config);
       case SpinType.CASCADE:
-        return this.cascadeGenerator.generate(snapshotGrid(grid, config.gridDimensions.cols), wins);
+        return this.cascadeGenerator.generate(snapshotGrid(grid, config.gridDimensions.cols), wins, config);
       default:
         throw new Error(`Unknown spin type: ${config.spinType}`);
     }

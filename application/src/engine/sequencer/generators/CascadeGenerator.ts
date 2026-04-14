@@ -1,14 +1,15 @@
-import { TimelineCommandTypes, type IWinEvaluationResult, type PlayTimeline } from '../../types';
+import { TimelineCommandTypes, type IGameConfig, type IWinEvaluationResult, type PlayTimeline } from '../../types';
+import { appendReelStopSequence, createReelStopExtensions } from '../reelStops';
 
 /**
  * TODO: write docs
  */
 export class CascadeGenerator {
-  public generate(initialGrid: number[][], wins: IWinEvaluationResult): PlayTimeline {
+  public generate(initialGrid: number[][], wins: IWinEvaluationResult, config: IGameConfig): PlayTimeline {
     const timeline: PlayTimeline = [];
 
     timeline.push([{ type: TimelineCommandTypes.SPIN_START }]);
-    this.pushReelStops(timeline, initialGrid);
+    this.pushReelStops(timeline, initialGrid, config);
 
     wins.cascadeSteps.forEach((step) => {
       timeline.push([
@@ -62,14 +63,7 @@ export class CascadeGenerator {
     return timeline;
   }
 
-  private pushReelStops(timeline: PlayTimeline, grid: number[][]): void {
-    grid.forEach((symbols, reelIndex) => {
-      timeline.push([
-        {
-          type: TimelineCommandTypes.REEL_STOP,
-          payload: { reelIndex, symbols: [...symbols] },
-        }
-      ]);
-    });
+  private pushReelStops(timeline: PlayTimeline, grid: number[][], config: IGameConfig): void {
+    appendReelStopSequence(timeline, grid, createReelStopExtensions(config));
   }
 }

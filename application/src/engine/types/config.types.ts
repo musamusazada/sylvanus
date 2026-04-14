@@ -20,6 +20,10 @@ export interface ISymbolPosition {
   row: number;
 }
 
+export interface IAnticipationConfig {
+  symbolId: number;
+}
+
 // TODO: tidy it up
 export interface IGameConfig {
   gridDimensions: IGridDimensions;
@@ -28,4 +32,5 @@ export interface IGameConfig {
   paylines: ISymbolPosition[][];
   defaultBet: number;
   betOptions: number[];
+  anticipation?: IAnticipationConfig;
 }
