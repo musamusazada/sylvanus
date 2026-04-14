@@ -32,7 +32,7 @@ export class SpinController implements IMachineSpin {
 
   public async anticipateReel(reel: IReel): Promise<void> {
     const strip = reel.getStrip();
-    const speed = this.config.animations.anticipation.speed;
+    const speed = this.config.animations.anticipation.speed!;
     const duration = this.config.animations.anticipation.duration;
     reelAnimations.setLoopSpeed(strip, speed);
 
