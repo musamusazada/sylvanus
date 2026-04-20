@@ -23,6 +23,9 @@ This project is split into two parts:
 
 A spin runs in the engine first. The result is a timeline of commands such as `SPIN_START` and `REEL_STOP`.
 
+-- Timeline generation needs a bit of work: My vision is to make its concurrency a bit better to support game features, running in paralel or in sequence easier. More structured way of generation of "commands" to get rid of boilerplates.
+Still my vision for the engine is not clear, if I want it in a way that it dicatates all game timeline (math, client -> pros: all outcomes would come from engine, good for replays, might include co-work for server/client devs). Still need to think to bring comfort of DX and business requirements of fast and easy development together.
+
 Architecture image: `public/engine_arch.webp`
 
 ### Client (React + Pixi)
@@ -34,6 +37,8 @@ The client is responsible for presentation and interaction:
 - **GameController + TimelineExecutor** coordinates game and attaches command handlers for engine commands.
 
 The client does not calculate outcomes. It receives engine commands and plays them in order.
+
+As for now, client architecture is just something simple to work on top of engine, I need to solidify it to ensure growth wouldn't be a downfall.
 
 Architecture image: `public/client_arch.png`
 
