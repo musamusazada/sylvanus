@@ -7,6 +7,10 @@ cd application
 ```
 
 ```bash
+npm i
+```
+
+```bash
 npm run dev
 ```
 
